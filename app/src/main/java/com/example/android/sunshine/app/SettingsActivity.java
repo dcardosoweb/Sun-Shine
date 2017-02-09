@@ -1,6 +1,9 @@
 package com.example.android.sunshine.app;
 
 
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -10,13 +13,17 @@ import android.preference.PreferenceManager;
 
 
 
-public class SettingsActivity extends PreferenceActivity implements Preference.OnPreferenceChangeListener {
+public class SettingsActivity extends PreferenceActivity
+        implements Preference.OnPreferenceChangeListener {
 
-    @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Add 'general' preferences, defined in the XML file
         addPreferencesFromResource(R.xml.pref_general);
+
+        // For all preferences, attach an OnPreferenceChangeListener so the UI summary can be
+        // updated when the preference changes.
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_temperature_unit_key)));
     }
@@ -55,5 +62,11 @@ public class SettingsActivity extends PreferenceActivity implements Preference.O
             preference.setSummary(stringValue);
         }
         return true;
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public Intent getParentActivityIntent() {
+        return super.getParentActivityIntent().addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
     }
 }
