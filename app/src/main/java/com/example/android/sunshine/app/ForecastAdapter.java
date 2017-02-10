@@ -23,14 +23,19 @@ public class ForecastAdapter extends CursorAdapter {
     private static final int VIEW_TYPE_TODAY = 0;
     private static final int VIEW_TYPE_FUTURE_DAY = 1;
     private static final int VIEW_TYPE_COUNT = 2;
+    private boolean mUseTodayLayout = true;
 
     public ForecastAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
+    public void setUseTodayLayout(boolean useTodayLayout) {
+        mUseTodayLayout = useTodayLayout;
+    }
+
     @Override
     public int getItemViewType(int position) {
-        return position == 0 ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
+        return (position == 0 && mUseTodayLayout) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
     }
 
     @Override
@@ -59,10 +64,22 @@ public class ForecastAdapter extends CursorAdapter {
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
         // Read weather icon ID from cursor
-        if(getItemViewType(cursor.getPosition()) == VIEW_TYPE_TODAY)
-            viewHolder.iconView.setImageResource(getArtResourceForWeatherCondition(weatherId));
-        else
-            viewHolder.iconView.setImageResource(getIconResourceForWeatherCondition(weatherId));
+        int viewType = getItemViewType(cursor.getPosition());
+        switch (viewType) {
+            case VIEW_TYPE_TODAY: {
+                // Get weather icon
+                viewHolder.iconView.setImageResource(Utility.getArtResourceForWeatherCondition(
+                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+                break;
+            }
+            case VIEW_TYPE_FUTURE_DAY: {
+                // Get weather icon
+                viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(
+                        cursor.getInt(ForecastFragment.COL_WEATHER_CONDITION_ID)));
+                break;
+            }
+        }
+
 
         long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
         viewHolder.dateView.setText(Utility.getFriendlyDayString(context,date));
@@ -70,6 +87,7 @@ public class ForecastAdapter extends CursorAdapter {
         String weather = cursor.getString(ForecastFragment.COL_WEATHER_DESC);
         viewHolder.weatherDescView.setText(weather);
 
+        viewHolder.iconView.setContentDescription(weather);
         // Read user preference for metric or imperial temperature units
         boolean isMetric = Utility.isMetric(context);
 
