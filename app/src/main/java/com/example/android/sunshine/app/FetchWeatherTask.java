@@ -12,7 +12,8 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- */
+ *//*
+
 package com.example.android.sunshine.app;
 
 import android.content.ContentUris;
@@ -58,9 +59,11 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void>  {
 
     private boolean DEBUG = true;
 
-    /* The date/time conversion code is going to be moved outside the asynctask later,
+    */
+/* The date/time conversion code is going to be moved outside the asynctask later,
      * so for convenience we're breaking it out into its own method now.
-     */
+     *//*
+
     private String getReadableDateString(long time){
         // Because the API returns a unix timestamp (measured in seconds),
         // it must be converted to milliseconds in order to be converted to valid date.
@@ -69,9 +72,11 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void>  {
         return format.format(date).toString();
     }
 
-    /**
+    */
+/**
      * Prepare the weather high/lows for presentation.
-     */
+     *//*
+
     private String formatHighLows(double high, double low) {
         // Data is fetched in Celsius by default.
         // If user prefers to see in Fahrenheit, convert the values here.
@@ -99,7 +104,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void>  {
         return highLowStr;
     }
 
-    /**
+    */
+/**
      * Helper method to handle insertion of a new location in the weather database.
      *
      * @param locationSetting The location string used to request updates from the server.
@@ -107,7 +113,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void>  {
      * @param lat the latitude of the city
      * @param lon the longitude of the city
      * @return the row ID of the added location.
-     */
+     *//*
+
     long addLocation(String locationSetting, String cityName, double lat, double lon) {
         long locationId;
 
@@ -143,11 +150,13 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void>  {
        return locationId;
     }
 
-    /*
+    */
+/*
         Students: This code will allow the FetchWeatherTask to continue to return the strings that
         the UX expects so that we can continue to test the application even once we begin using
         the database.
-     */
+     *//*
+
     String[] convertContentValuesToUXFormat(Vector<ContentValues> cvv) {
         // return strings to keep UI functional for now
         String[] resultStrs = new String[cvv.size()];
@@ -395,4 +404,4 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void>  {
         }
         return null;
     }
-}
+}*/
